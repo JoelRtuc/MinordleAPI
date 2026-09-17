@@ -68,12 +68,14 @@ public class LanguageBasesController : ControllerBase
     // POST: api/LanguageBase
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<LanguageBase>> PostLanguageBase(string languageName, string languageFamily, string languageDescription)
+    public async Task<ActionResult<LanguageBase>> PostLanguageBase(string languageName, string languageFamily, string languageDescription, string languageExample, string audioFile = "")
     {
         LanguageBase languagebase = new LanguageBase();
         languagebase.LanguageName = languageName;
         languagebase.LanguageFamily = languageFamily;
         languagebase.LanguageDescription = languageDescription;
+        languagebase.LanguageExample = languageExample;
+        languagebase.audioFile = audioFile;
         languagebase.GreenImg = $"/LanguageMapPNGs/{languageName}_Green.png";
         languagebase.YellowImg = $"/LanguageMapPNGs/{languageName}_Yellow.png";
 
