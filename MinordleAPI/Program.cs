@@ -33,9 +33,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseStaticFiles();
-
 app.UseCors("AllowReactDev");
+
+app.UseStaticFiles();
 
 app.UseHttpsRedirection();
 
