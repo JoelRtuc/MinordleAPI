@@ -9,5 +9,7 @@
 
         public List<int> GameResults { get; set; } = new List<int>();
         public int streak { get; set; } = 0;
+
+        public string ProfilePicturePath { get; set; } = string.Empty;
     }
 }

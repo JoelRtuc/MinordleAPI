@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinordleAPI;
 using MinordleAPI.Data;
+using System.IO;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -94,6 +95,32 @@ public class UsersController : ControllerBase
         await _context.SaveChangesAsync();
 
         return NoContent();
+    }
+
+    [HttpPost("{id:int}/profile-picture")]
+    public async Task<ActionResult> UploadProfilePicture(int id, IFormFile file)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user is null) return NotFound();
+
+        var allowed = new[] { "image/png", "image/jpeg", "image/webp" };
+        if (!allowed.Contains(file.ContentType))
+            return BadRequest("Unsupported image format.");
+
+        var folder = Path.Combine("wwwroot", "ProfilePictures");
+        Directory.CreateDirectory(folder); // ensure it exists
+
+        var ext = Path.GetExtension(file.FileName);
+        var fileName = $"{Guid.NewGuid()}{ext}";
+        var fullPath = Path.Combine(folder, fileName);
+
+        using (var stream = System.IO.File.Create(fullPath))
+            await file.CopyToAsync(stream);
+
+        user.ProfilePicturePath = $"/ProfilePictures/{fileName}";
+        await _context.SaveChangesAsync();
+
+        return Ok(new { user.ProfilePicturePath });
     }
 
     private bool UserExists(int? id)
