@@ -37,7 +37,7 @@ app.UseCors("AllowReactDev");
 
 app.UseStaticFiles();
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
